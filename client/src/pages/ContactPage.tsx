@@ -46,6 +46,8 @@ export function ContactPage() {
         body: JSON.stringify(payload),
       });
 
+      console.log(response);
+
       if (!response.ok) {
         throw new Error('Failed to send message');
       }

@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 
 // Contact Form Endpoint
 app.post('/api/contact', async (req, res) => {
+    // console.log(req.body);
     try {
         const { name, email, company, message, type } = req.body;
 
@@ -46,6 +47,10 @@ app.post('/api/contact', async (req, res) => {
         res.status(201).json({ message: 'Request received successfully' });
     } catch (error) {
         console.error('Submission Error:', error);
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(val => val.message);
+            return res.status(400).json({ error: messages.join(', ') });
+        }
         res.status(500).json({ error: 'Server error processing request' });
     }
 });
