@@ -26,8 +26,8 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white mb-4">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <h3 className="text-white mb-4 font-medium">Quick Links</h3>
+            <div className="grid grid-cols-2 gap-y-2 gap-x-4">
               {links.map((link) => (
                 <Link
                   key={link.href}
@@ -37,18 +37,21 @@ export function Footer() {
                   {link.label}
                 </Link>
               ))}
+              <Link to="/privacy" className="text-slate-400 hover:text-emerald-500 transition-colors text-sm">
+                Privacy
+              </Link>
+              <Link to="/terms" className="text-slate-400 hover:text-emerald-500 transition-colors text-sm">
+                Terms
+              </Link>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
           <p>© 2026 Nija Ventures Private Impact Limited. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link to="/privacy" className="hover:text-emerald-500 transition-colors">
-              Privacy
-            </Link>
-            <Link to="/terms" className="hover:text-emerald-500 transition-colors">
-              Terms
+            <Link to="/careers" className="hover:text-emerald-500 transition-colors">
+              Careers
             </Link>
           </div>
         </div>

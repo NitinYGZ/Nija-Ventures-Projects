@@ -5,7 +5,14 @@ const LeadSchema = new mongoose.Schema({
     email: { type: String, required: true },
     company: { type: String, required: true },
     message: { type: String },
-    type: { type: String, enum: ['Demo', 'Solutions Architect', 'Overview', 'Security Brief', 'Other'], default: 'Demo' },
+    type: {
+        type: String,
+        enum: [
+            'Demo', 'Solutions Architect', 'Overview', 'Security Brief', 'Other',
+            'demo', 'tokenisation', 'supply-chain', 'identity', 'loyalty', 'advisory', 'other'
+        ],
+        default: 'Demo'
+    },
     createdAt: { type: Date, default: Date.now },
 });
 

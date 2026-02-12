@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { Network, Cpu, FileText, Cog, Shield, CheckCircle, ArrowRight, Lock, BarChart3 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const technologyData: Record<string, any> = {
   'blockchain': {
@@ -191,65 +192,89 @@ export function TechnologyDetailPage() {
   return (
     <div className="pt-24">
       {/* Hero Section */}
-      <section className="bg-slate-900 text-white py-20 lg:py-28 network-pattern-dark">
+      <section className="bg-white/80 py-20 lg:py-28 network-pattern backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl"
+          >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-emerald-500/20 rounded-lg">
-                <Icon className="w-8 h-8 text-emerald-400" />
+              <div className="p-3 bg-emerald-100 rounded-lg">
+                <Icon className="w-8 h-8 text-emerald-600" />
               </div>
-              <span className="text-emerald-400 text-sm uppercase tracking-wide">Technology</span>
+              <span className="text-emerald-600 text-sm uppercase tracking-wide">Technology</span>
             </div>
-            <h1 className="text-4xl lg:text-5xl mb-6">
+            <h1 className="text-4xl lg:text-5xl text-slate-900 mb-6">
               {tech.headline}
             </h1>
-            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
               {tech.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
+              >
                 Request a Demo
-              </button>
-              <button className="px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-colors">
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(241, 245, 249, 0.5)' }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
                 Download Overview
-              </button>
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Outcomes Section */}
-      <section className="bg-white py-20">
+      <section className="bg-white/80 py-20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl text-slate-900 mb-12 text-center">Key Outcomes</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {tech.outcomes.map((outcome: any) => (
-              <div key={outcome.title} className="text-center">
+            {tech.outcomes.map((outcome: any, index: number) => (
+              <motion.div
+                key={outcome.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-center"
+              >
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-full mb-4">
                   <CheckCircle className="w-6 h-6 text-emerald-600" />
                 </div>
                 <h3 className="text-xl text-slate-900 mb-2">{outcome.title}</h3>
                 <p className="text-slate-600">{outcome.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Use Cases Section */}
-      <section className="bg-slate-50 py-20 network-pattern">
+      <section className="bg-slate-50/80 py-20 network-pattern backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl text-slate-900 mb-12 text-center">Common Use Cases</h2>
             <div className="grid md:grid-cols-2 gap-4">
-              {tech.useCases.map((useCase: string) => (
-                <div
+              {tech.useCases.map((useCase: string, index: number) => (
+                <motion.div
                   key={useCase}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="bg-white rounded-lg p-5 border border-slate-200 flex items-start gap-3"
                 >
                   <div className="w-2 h-2 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
                   <span className="text-slate-700">{useCase}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -257,11 +282,17 @@ export function TechnologyDetailPage() {
       </section>
 
       {/* Architecture Diagram Section */}
-      <section className="bg-white py-20">
+      <section className="bg-white/80 py-20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl text-slate-900 mb-12 text-center">Reference Architecture</h2>
           <div className="max-w-4xl mx-auto">
-            <div className="bg-slate-50 rounded-xl p-12 border border-slate-200">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-slate-50 rounded-xl p-12 border border-slate-200"
+            >
               <div className="space-y-6">
                 {/* Simple flowchart representation */}
                 <div className="flex items-center justify-between gap-4">
@@ -284,37 +315,45 @@ export function TechnologyDetailPage() {
                   Simplified architecture diagram. Actual implementation varies by use case.
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Key Features Section */}
-      <section className="bg-slate-50 py-20">
+      <section className="bg-slate-50/80 py-20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl text-slate-900 mb-12 text-center">Key Features</h2>
           <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-4">
-            {tech.features.map((feature: string) => (
-              <div
+            {tech.features.map((feature: string, index: number) => (
+              <motion.div
                 key={feature}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white rounded-lg p-5 border border-slate-200 flex items-start gap-3"
               >
                 <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
                 <span className="text-slate-700">{feature}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Implementation Process */}
-      <section className="bg-white py-20">
+      <section className="bg-white/80 py-20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl text-slate-900 mb-12 text-center">Implementation Process</h2>
           <div className="max-w-4xl mx-auto space-y-6">
             {tech.implementation.map((phase: any, idx: number) => (
-              <div
+              <motion.div
                 key={phase.step}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="bg-slate-50 rounded-lg p-6 border border-slate-200 flex gap-6"
               >
                 <div className="flex-shrink-0">
@@ -326,26 +365,32 @@ export function TechnologyDetailPage() {
                   <h3 className="text-xl text-slate-900 mb-2">{phase.step}</h3>
                   <p className="text-slate-600 leading-relaxed">{phase.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Security Section */}
-      <section className="bg-slate-50 py-20">
+      <section className="bg-slate-50/80 py-20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
               <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
                 <Lock className="w-8 h-8 text-emerald-600" />
               </div>
               <h2 className="text-3xl text-slate-900 mb-4">Security & Compliance</h2>
               <p className="text-lg text-slate-600">
-                All implementations include enterprise-grade security controls, 
+                All implementations include enterprise-grade security controls,
                 comprehensive audit logging, and support for compliance frameworks.
               </p>
-            </div>
+            </motion.div>
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 'End-to-end encryption',
@@ -354,11 +399,18 @@ export function TechnologyDetailPage() {
                 'Data residency options',
                 'Compliance reporting',
                 'Regular security updates',
-              ].map((item) => (
-                <div key={item} className="bg-white rounded-lg p-4 border border-slate-200 flex items-center gap-3">
+              ].map((item, index) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="bg-white rounded-lg p-4 border border-slate-200 flex items-center gap-3"
+                >
                   <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
                   <span className="text-slate-700">{item}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -366,41 +418,59 @@ export function TechnologyDetailPage() {
       </section>
 
       {/* Related Solutions */}
-      <section className="bg-white py-20">
+      <section className="bg-white/80 py-20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl text-slate-900 mb-12 text-center">Related Solutions</h2>
           <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6">
-            {tech.relatedSolutions.map((solutionSlug: string) => (
-              <Link
+            {tech.relatedSolutions.map((solutionSlug: string, index: number) => (
+              <motion.div
                 key={solutionSlug}
-                to={`/solutions/${solutionSlug}`}
-                className="bg-slate-50 rounded-lg p-6 border border-slate-200 hover:border-emerald-300 transition-colors group"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                  {solutionSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                </div>
-                <div className="flex items-center gap-2 text-emerald-600 text-sm">
-                  Learn more
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </Link>
+                <Link
+                  to={`/solutions/${solutionSlug}`}
+                  className="bg-slate-50 rounded-lg p-6 border border-slate-200 hover:border-emerald-300 transition-colors group block h-full"
+                >
+                  <div className="text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    {solutionSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </div>
+                  <div className="flex items-center gap-2 text-emerald-600 text-sm">
+                    Learn more
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-slate-900 text-white py-20">
+      <section className="bg-slate-900/95 text-white py-20 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl mb-4">
-            Ready to explore {tech.title}?
-          </h2>
-          <p className="text-xl text-slate-300 mb-8">
-            Talk to our solutions architects about how {tech.title} can address your specific requirements.
-          </p>
-          <button className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-            Talk to a Solutions Architect
-          </button>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl lg:text-4xl mb-4">
+              Ready to explore {tech.title}?
+            </h2>
+            <p className="text-xl text-slate-300 mb-8">
+              Talk to our solutions architects about how {tech.title} can address your specific requirements.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
+            >
+              Talk to a Solutions Architect
+            </motion.button>
+          </motion.div>
         </div>
       </section>
     </div>

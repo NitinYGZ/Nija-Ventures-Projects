@@ -1,5 +1,5 @@
 .env
 
 /client_backup
-
-/client-figma
+/client
+# /client-figma

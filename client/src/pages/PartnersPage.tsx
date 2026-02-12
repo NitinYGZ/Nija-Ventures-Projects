@@ -1,4 +1,5 @@
 import { Handshake, Users, Award, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function PartnersPage() {
   const partnerCategories = [
@@ -41,26 +42,38 @@ export function PartnersPage() {
   return (
     <div className="pt-24">
       {/* Hero Section */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white/80 py-20 lg:py-28 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
             <h1 className="text-4xl lg:text-5xl text-slate-900 mb-6">
               Partners & Ecosystem
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
-              We collaborate with leading technology providers, system integrators, and industry organisations 
+              We collaborate with leading technology providers, system integrators, and industry organisations
               to deliver comprehensive solutions for enterprise clients.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Partner Categories */}
-      <section className="bg-slate-50 py-20 network-pattern">
+      <section className="bg-slate-50/80 py-20 network-pattern backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12">
-            {partnerCategories.map((category) => (
-              <div key={category.title} className="bg-white rounded-xl p-8 border border-slate-200">
+            {partnerCategories.map((category, index) => (
+              <motion.div
+                key={category.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white rounded-xl p-8 border border-slate-200"
+              >
                 <div className="flex items-start gap-4 mb-6">
                   <div className="p-3 bg-emerald-100 rounded-lg flex-shrink-0">
                     <Handshake className="w-6 h-6 text-emerald-600" />
@@ -80,23 +93,29 @@ export function PartnersPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Partner Benefits */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white/80 py-20 lg:py-28 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
             <h2 className="text-3xl lg:text-4xl text-slate-900 mb-4">
               Why Partner with Nija
             </h2>
             <p className="text-lg text-slate-600 max-w-3xl mx-auto">
               Join our ecosystem to expand your capabilities and deliver greater value to enterprise clients.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -115,32 +134,50 @@ export function PartnersPage() {
                 title: 'Co-Innovation',
                 description: 'Collaborate on new solutions and go-to-market strategies for emerging use cases.',
               },
-            ].map((benefit) => (
-              <div key={benefit.title} className="bg-slate-50 rounded-xl p-8 border border-slate-200 text-center">
+            ].map((benefit, index) => (
+              <motion.div
+                key={benefit.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-slate-50 rounded-xl p-8 border border-slate-200 text-center"
+              >
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-full mb-4">
                   <benefit.icon className="w-6 h-6 text-emerald-600" />
                 </div>
                 <h3 className="text-xl text-slate-900 mb-3">{benefit.title}</h3>
                 <p className="text-slate-600 leading-relaxed">{benefit.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-slate-900 text-white py-20">
+      <section className="bg-slate-900/95 text-white py-20 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl mb-4">
-            Interested in partnering?
-          </h2>
-          <p className="text-xl text-slate-300 mb-8">
-            We're always looking for organisations that share our commitment to delivering 
-            secure, enterprise-grade solutions.
-          </p>
-          <button className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-            Explore Partnership Opportunities
-          </button>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl lg:text-4xl mb-4">
+              Interested in partnering?
+            </h2>
+            <p className="text-xl text-slate-300 mb-8">
+              We're always looking for organisations that share our commitment to delivering
+              secure, enterprise-grade solutions.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
+            >
+              Explore Partnership Opportunities
+            </motion.button>
+          </motion.div>
         </div>
       </section>
     </div>

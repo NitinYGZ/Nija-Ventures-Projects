@@ -1,4 +1,6 @@
 import { Package, Building2, Heart, ShoppingBag, TrendingUp, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export function CaseStudiesPage() {
   const caseStudies = [
@@ -67,29 +69,36 @@ export function CaseStudiesPage() {
   return (
     <div className="pt-24">
       {/* Hero Section */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white/80 py-20 lg:py-28 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
             <h1 className="text-4xl lg:text-5xl text-slate-900 mb-6">
               Case Studies
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
               Real implementations delivering measurable results for enterprise clients across industries.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Case Studies Grid */}
-      <section className="bg-slate-50 py-20 network-pattern">
+      <section className="bg-slate-50/80 py-20 network-pattern backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12">
             {caseStudies.map((study, idx) => (
-              <div
+              <motion.div
                 key={study.title}
-                className={`bg-white rounded-xl p-8 lg:p-10 border border-slate-200 hover:border-emerald-300 transition-colors ${
-                  idx % 2 === 0 ? 'fade-in-up' : 'fade-in-delay-1'
-                }`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className="bg-white rounded-xl p-8 lg:p-10 border border-slate-200 hover:border-emerald-300 transition-colors"
               >
                 <div className="flex items-start gap-6 mb-6">
                   <div className="p-4 bg-emerald-100 rounded-lg flex-shrink-0">
@@ -122,24 +131,35 @@ export function CaseStudiesPage() {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-white py-20">
+      <section className="bg-white/80 py-20 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl text-slate-900 mb-4">
-            Discuss your use case
-          </h2>
-          <p className="text-lg text-slate-600 mb-8">
-            Every organisation has unique requirements. Let's explore how we can help you achieve your objectives.
-          </p>
-          <button className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
-            Request a Demo
-          </button>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl text-slate-900 mb-4">
+              Discuss your use case
+            </h2>
+            <p className="text-lg text-slate-600 mb-8">
+              Every organisation has unique requirements. Let's explore how we can help you achieve your objectives.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
+            >
+              Request a Demo
+            </motion.button>
+          </motion.div>
         </div>
       </section>
     </div>

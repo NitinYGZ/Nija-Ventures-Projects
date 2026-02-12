@@ -1,4 +1,5 @@
 import { ExternalLink, Calendar, FileText } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function MediaPage() {
   const mediaItems = [
@@ -55,26 +56,35 @@ export function MediaPage() {
   return (
     <div className="pt-24">
       {/* Hero Section */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="bg-white/80 py-20 lg:py-28 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
             <h1 className="text-4xl lg:text-5xl text-slate-900 mb-6">
               Media & Press
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
               News coverage, interviews, and press releases about Nija World and our work with enterprise clients.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Media Items */}
-      <section className="bg-slate-50 py-20 network-pattern">
+      <section className="bg-slate-50/80 py-20 network-pattern backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-6">
-            {mediaItems.map((item) => (
-              <article
+            {mediaItems.map((item, index) => (
+              <motion.article
                 key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-white rounded-xl p-6 lg:p-8 border border-slate-200 hover:border-emerald-300 transition-colors"
               >
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
@@ -100,16 +110,22 @@ export function MediaPage() {
                     <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </div>
       </section>
 
       {/* Press Kit CTA */}
-      <section className="bg-white py-20">
+      <section className="bg-white/80 py-20 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-50 rounded-2xl p-8 lg:p-12 border border-slate-200 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="bg-slate-50 rounded-2xl p-8 lg:p-12 border border-slate-200 text-center"
+          >
             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-6">
               <FileText className="w-8 h-8 text-emerald-600" />
             </div>
@@ -119,10 +135,14 @@ export function MediaPage() {
             <p className="text-lg text-slate-600 mb-8">
               For media inquiries, press kit materials, or interview requests, please contact our communications team.
             </p>
-            <button className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
+            >
               Contact Press Team
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </section>
     </div>

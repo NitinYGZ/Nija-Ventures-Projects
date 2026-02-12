@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { insightsData } from '../data/insightsData';
 
 export function InsightDetailPage() {
@@ -18,7 +19,7 @@ export function InsightDetailPage() {
     }
 
     return (
-        <div className="pt-24 pb-20 bg-white">
+        <div className="pt-24 pb-20 bg-white/80 backdrop-blur-sm">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <Link
                     to="/insights"
@@ -28,7 +29,12 @@ export function InsightDetailPage() {
                     Back to Insights
                 </Link>
 
-                <header className="mb-10">
+                <motion.header
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-10"
+                >
                     <div className="flex items-center gap-4 text-sm text-slate-500 mb-6">
                         <span className="inline-flex items-center gap-1">
                             <Calendar className="w-4 h-4" /> {insight.date}
@@ -48,23 +54,38 @@ export function InsightDetailPage() {
                     <p className="text-xl text-slate-600 leading-relaxed border-l-4 border-emerald-500 pl-6">
                         {insight.excerpt}
                     </p>
-                </header>
+                </motion.header>
 
-                <article
+                <motion.article
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
                     className="prose prose-slate lg:prose-lg max-w-none hover:prose-a:text-emerald-600"
                     dangerouslySetInnerHTML={{ __html: insight.content }}
                 />
 
                 <hr className="my-12 border-slate-200" />
 
-                <div className="bg-slate-50 rounded-xl p-8 border border-slate-200">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="bg-slate-50 rounded-xl p-8 border border-slate-200"
+                >
                     <h3 className="text-xl text-slate-900 mb-4">Subscribe for more insights</h3>
                     <p className="text-slate-600 mb-6">Get the latest analysis on enterprise AI and blockchain delivered to your inbox.</p>
                     <div className="flex gap-4">
                         <input type="email" placeholder="Email address" className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" />
-                        <button className="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 font-medium transition-colors">Subscribe</button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 font-medium transition-colors"
+                        >
+                            Subscribe
+                        </motion.button>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );
