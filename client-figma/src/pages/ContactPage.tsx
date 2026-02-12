@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 interface ContactFormData {
   firstName: string;
@@ -62,40 +63,51 @@ export function ContactPage() {
   };
 
   return (
-    <div className="pt-24">
+    <div className="pt-24 min-h-screen relative overflow-hidden">
       {/* Hero Section */}
-      <section className="bg-white py-20 lg:py-28">
+      <section className="relative z-10 py-20 lg:py-28 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl lg:text-5xl text-slate-900 mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-4xl lg:text-5xl text-slate-900 mb-6 font-bold tracking-tight">
               Contact Us
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
               Whether you're exploring digital transformation or ready to deploy,
               we're here to help you find the right solution.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Contact Form and Info */}
-      <section className="bg-slate-50 py-20 network-pattern">
+      <section className="relative z-10 py-20 bg-slate-50/50 network-pattern">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-white rounded-xl p-8 border border-slate-200">
-              <h2 className="text-2xl text-slate-900 mb-6">Send us a message</h2>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm"
+            >
+              <h2 className="text-2xl text-slate-900 mb-6 font-semibold">Send us a message</h2>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="firstName" className="block text-sm text-slate-700 mb-2">
                       First Name *
                     </label>
-                    <input
+                    <motion.input
+                      whileFocus={{ scale: 1.01, borderColor: "#10B981" }}
                       {...register('firstName', { required: 'First name is required' })}
                       type="text"
                       id="firstName"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.firstName ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.firstName ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                     />
                     {errors.firstName && <span className="text-xs text-red-500 mt-1">{errors.firstName.message}</span>}
                   </div>
@@ -103,11 +115,12 @@ export function ContactPage() {
                     <label htmlFor="lastName" className="block text-sm text-slate-700 mb-2">
                       Last Name *
                     </label>
-                    <input
+                    <motion.input
+                      whileFocus={{ scale: 1.01, borderColor: "#10B981" }}
                       {...register('lastName', { required: 'Last name is required' })}
                       type="text"
                       id="lastName"
-                      className={`w-full px-4 py-3 rounded-lg border ${errors.lastName ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                      className={`w-full px-4 py-3 rounded-lg border ${errors.lastName ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                     />
                     {errors.lastName && <span className="text-xs text-red-500 mt-1">{errors.lastName.message}</span>}
                   </div>
@@ -117,7 +130,8 @@ export function ContactPage() {
                   <label htmlFor="email" className="block text-sm text-slate-700 mb-2">
                     Email *
                   </label>
-                  <input
+                  <motion.input
+                    whileFocus={{ scale: 1.01, borderColor: "#10B981" }}
                     {...register('email', {
                       required: 'Email is required',
                       pattern: {
@@ -127,7 +141,7 @@ export function ContactPage() {
                     })}
                     type="email"
                     id="email"
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                   />
                   {errors.email && <span className="text-xs text-red-500 mt-1">{errors.email.message}</span>}
                 </div>
@@ -136,11 +150,12 @@ export function ContactPage() {
                   <label htmlFor="company" className="block text-sm text-slate-700 mb-2">
                     Company *
                   </label>
-                  <input
+                  <motion.input
+                    whileFocus={{ scale: 1.01, borderColor: "#10B981" }}
                     {...register('company', { required: 'Company is required' })}
                     type="text"
                     id="company"
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.company ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.company ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                   />
                   {errors.company && <span className="text-xs text-red-500 mt-1">{errors.company.message}</span>}
                 </div>
@@ -149,10 +164,11 @@ export function ContactPage() {
                   <label htmlFor="interest" className="block text-sm text-slate-700 mb-2">
                     I'm interested in *
                   </label>
-                  <select
+                  <motion.select
+                    whileFocus={{ scale: 1.01, borderColor: "#10B981" }}
                     {...register('interest', { required: 'Please select an option' })}
                     id="interest"
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.interest ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.interest ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all`}
                   >
                     <option value="">Select an option</option>
                     <option value="demo">Requesting a demo</option>
@@ -162,7 +178,7 @@ export function ContactPage() {
                     <option value="loyalty">Loyalty solution</option>
                     <option value="advisory">Digital assets advisory</option>
                     <option value="other">Other</option>
-                  </select>
+                  </motion.select>
                   {errors.interest && <span className="text-xs text-red-500 mt-1">{errors.interest.message}</span>}
                 </div>
 
@@ -170,32 +186,43 @@ export function ContactPage() {
                   <label htmlFor="message" className="block text-sm text-slate-700 mb-2">
                     Message *
                   </label>
-                  <textarea
+                  <motion.textarea
+                    whileFocus={{ scale: 1.01, borderColor: "#10B981" }}
                     {...register('message', { required: 'Message is required' })}
                     id="message"
                     rows={5}
-                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none`}
+                    className={`w-full px-4 py-3 rounded-lg border ${errors.message ? 'border-red-500' : 'border-slate-300'} focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none transition-all`}
                   />
                   {errors.message && <span className="text-xs text-red-500 mt-1">{errors.message.message}</span>}
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
                 >
                   {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                   {isSubmitting ? 'Sending...' : 'Send Message'}
-                </button>
+                </motion.button>
               </form>
-            </div>
+            </motion.div>
 
             {/* Contact Information */}
-            <div className="space-y-8">
-              <div className="bg-white rounded-xl p-8 border border-slate-200">
-                <h2 className="text-2xl text-slate-900 mb-6">Get in touch</h2>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="space-y-8"
+            >
+              <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl text-slate-900 mb-6 font-semibold">Get in touch</h2>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="flex items-start gap-4 transition-transform"
+                  >
                     <div className="p-3 bg-emerald-100 rounded-lg flex-shrink-0">
                       <Mail className="w-5 h-5 text-emerald-600" />
                     </div>
@@ -205,9 +232,12 @@ export function ContactPage() {
                         contact@nijaworld.com
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-start gap-4">
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="flex items-start gap-4 transition-transform"
+                  >
                     <div className="p-3 bg-emerald-100 rounded-lg flex-shrink-0">
                       <Phone className="w-5 h-5 text-emerald-600" />
                     </div>
@@ -217,9 +247,12 @@ export function ContactPage() {
                         +1 (234) 567-890
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="flex items-start gap-4">
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="flex items-start gap-4 transition-transform"
+                  >
                     <div className="p-3 bg-emerald-100 rounded-lg flex-shrink-0">
                       <MapPin className="w-5 h-5 text-emerald-600" />
                     </div>
@@ -230,28 +263,44 @@ export function ContactPage() {
                         Tech District, Singapore
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
 
-              <div className="bg-slate-900 text-white rounded-xl p-8">
+              <div className="bg-slate-900 text-white rounded-xl p-8 shadow-lg">
                 <h3 className="text-xl mb-4">Looking for something specific?</h3>
                 <div className="space-y-3">
-                  <button className="w-full px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors text-left">
+                  <motion.button
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-all text-left shadow-lg shadow-emerald-900/20"
+                  >
                     Request a Demo
-                  </button>
-                  <button className="w-full px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-colors text-left">
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-all text-left"
+                  >
                     Talk to a Solutions Architect
-                  </button>
-                  <button className="w-full px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-colors text-left">
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-all text-left"
+                  >
                     Download Overview
-                  </button>
-                  <button className="w-full px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-colors text-left">
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-6 py-3 border border-slate-600 text-white rounded-lg hover:bg-slate-800 transition-all text-left"
+                  >
                     Request a Security Brief
-                  </button>
+                  </motion.button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -259,12 +308,19 @@ export function ContactPage() {
       {/* Office Hours */}
       <section className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl text-slate-900 mb-4">
-            We're here to help
-          </h2>
-          <p className="text-lg text-slate-600">
-            Our team typically responds within 24 hours during business days (Monday-Friday, 9am-6pm SGT).
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl text-slate-900 mb-4 font-bold">
+              We're here to help
+            </h2>
+            <p className="text-lg text-slate-600">
+              Our team typically responds within 24 hours during business days (Monday-Friday, 9am-6pm SGT).
+            </p>
+          </motion.div>
         </div>
       </section>
     </div>
