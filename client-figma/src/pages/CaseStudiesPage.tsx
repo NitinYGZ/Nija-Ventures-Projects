@@ -1,69 +1,31 @@
 import { Package, Building2, Heart, ShoppingBag, TrendingUp, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useState, useEffect } from 'react';
+import { fetchCaseStudies } from '../services/api';
+
+const iconMap: any = {
+  Package,
+  Building2,
+  Heart,
+  ShoppingBag,
+  TrendingUp,
+};
+
 export function CaseStudiesPage() {
-  const caseStudies = [
-    {
-      icon: Package,
-      industry: 'Supply Chain & Logistics',
-      title: 'End-to-End Traceability for Global Manufacturer',
-      challenge: 'Manual tracking processes and limited visibility across multi-tier supply chain resulted in compliance risks and customer trust issues.',
-      solution: 'Deployed blockchain-based traceability platform with IoT sensor integration across manufacturing, distribution, and retail partners.',
-      results: [
-        '87% reduction in product verification time',
-        'Full ESG compliance reporting enabled',
-        '40+ suppliers onboarded across 12 countries',
-      ],
-    },
-    {
-      icon: Building2,
-      industry: 'Financial Services',
-      title: 'Decentralised Identity for KYC Streamlining',
-      challenge: 'Complex KYC processes and siloed customer data across business units led to poor customer experience and high compliance costs.',
-      solution: 'Implemented decentralised identity platform enabling reusable credentials and selective disclosure across banking products.',
-      results: [
-        '65% faster customer onboarding',
-        '40% reduction in compliance overhead',
-        'Improved customer satisfaction scores',
-      ],
-    },
-    {
-      icon: Heart,
-      industry: 'Healthcare',
-      title: 'Credential Management for Healthcare Network',
-      challenge: 'Fragmented credentialing systems and manual verification processes delayed provider onboarding and increased administrative burden.',
-      solution: 'Deployed tokenised credential system with automated verification workflows and secure data sharing across network participants.',
-      results: [
-        '92% improvement in credential verification time',
-        'Enhanced data privacy and HIPAA compliance',
-        'Reduced administrative costs by 35%',
-      ],
-    },
-    {
-      icon: ShoppingBag,
-      industry: 'Retail',
-      title: 'Multi-Brand Loyalty Coalition',
-      challenge: 'Siloed loyalty programs limited customer engagement and prevented cross-brand partnerships.',
-      solution: 'Built blockchain-based coalition loyalty platform with tokenised rewards and real-time redemption across 15 retail partners.',
-      results: [
-        '45% increase in active member engagement',
-        '3x growth in cross-brand redemptions',
-        'Real-time settlement between partners',
-      ],
-    },
-    {
-      icon: TrendingUp,
-      industry: 'Asset Management',
-      title: 'Digital Securities Platform',
-      challenge: 'Traditional securities infrastructure limited liquidity, transparency, and accessibility for alternative investments.',
-      solution: 'Developed compliant tokenisation platform for private market securities with integrated custody and transfer agent services.',
-      results: [
-        'Enabled fractional ownership and 24/7 trading',
-        'Reduced settlement time from T+3 to instant',
-        'Comprehensive regulatory reporting',
-      ],
-    },
-  ];
+  const [caseStudies, setCaseStudies] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchCaseStudies();
+        setCaseStudies(data);
+      } catch (error) {
+        console.error('Error fetching case studies:', error);
+      }
+    };
+    loadData();
+  }, []);
 
   return (
     <div className="pt-24 min-h-screen">
@@ -102,7 +64,10 @@ export function CaseStudiesPage() {
               >
                 <div className="flex items-start gap-6 mb-6">
                   <div className="p-4 bg-emerald-100 rounded-lg flex-shrink-0">
-                    <study.icon className="w-8 h-8 text-emerald-600" />
+                    {(() => {
+                      const Icon = iconMap[study.icon] || Package;
+                      return <Icon className="w-8 h-8 text-emerald-600" />;
+                    })()}
                   </div>
                   <div>
                     <div className="text-sm text-emerald-600 mb-2 font-medium">{study.industry}</div>
@@ -122,7 +87,7 @@ export function CaseStudiesPage() {
                   <div>
                     <div className="text-xs uppercase tracking-wide text-slate-500 mb-2 font-bold">Results</div>
                     <ul className="space-y-2">
-                      {study.results.map((result) => (
+                      {study.results.map((result: string) => (
                         <li key={result} className="flex items-start gap-2 text-slate-900">
                           <ArrowRight className="w-4 h-4 text-emerald-500 mt-1 flex-shrink-0" />
                           <span>{result}</span>

@@ -1,8 +1,39 @@
 import { Link } from 'react-router-dom';
-import { Shield, Zap, Database, Network, CheckCircle, ArrowRight, FileText, Lock, BarChart3, Globe, Cpu, Code } from 'lucide-react';
+import { Shield, Zap, Database, Network, CheckCircle, ArrowRight, FileText, Lock, BarChart3, Globe, Cpu, Code, Coins, Package, UserCheck, Award, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { fetchSolutions, fetchCaseStudies, fetchInsights, fetchMedia } from '../services/api';
+
+const iconMap: any = {
+  Coins, Package, UserCheck, Award, TrendingUp,
+  Shield, Zap, Database, Network, CheckCircle, FileText, Lock, BarChart3, Globe, Cpu, Code
+};
 
 export function HomePage() {
+  const [solutions, setSolutions] = useState<any[]>([]);
+  const [caseStudies, setCaseStudies] = useState<any[]>([]);
+  const [insights, setInsights] = useState<any[]>([]);
+  const [media, setMedia] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [solutionsData, caseStudiesData, insightsData, mediaData] = await Promise.all([
+          fetchSolutions(),
+          fetchCaseStudies(),
+          fetchInsights(),
+          fetchMedia()
+        ]);
+        setSolutions(solutionsData);
+        setCaseStudies(caseStudiesData);
+        setInsights(insightsData);
+        setMedia(mediaData);
+      } catch (error) {
+        console.error('Error fetching home page data:', error);
+      }
+    };
+    loadData();
+  }, []);
   return (
     <div className="pt-24 overflow-x-hidden">
       {/* Hero Section */}
@@ -188,47 +219,16 @@ export function HomePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {[
-              {
-                title: 'Tokenisation',
-                description: 'Issue and manage compliant digital assets, credentials, and entitlements with full audit trails.',
-                bullets: ['Real-world asset tokenisation', 'Credential issuance', 'Regulatory compliance'],
-                href: '/solutions/tokenisation',
-              },
-              {
-                title: 'Supply Chain Traceability',
-                description: 'Track products and materials across complex supply chains with verifiable provenance.',
-                bullets: ['End-to-end visibility', 'Provenance verification', 'ESG reporting'],
-                href: '/solutions/supply-chain-solution',
-              },
-              {
-                title: 'Identity Management',
-                description: 'Decentralised identity and access management for secure, user-controlled credentials.',
-                bullets: ['Self-sovereign identity', 'Access control', 'Privacy by design'],
-                href: '/solutions/identity-management',
-              },
-              {
-                title: 'Loyalty Solutions',
-                description: 'Modern loyalty and rewards programs with flexible token economics and partner integration.',
-                bullets: ['Multi-partner programs', 'Token rewards', 'Customer engagement'],
-                href: '/solutions/loyalty-solution',
-              },
-              {
-                title: 'Digital Assets Advisory',
-                description: 'Strategic guidance for digital asset strategy, tokenisation design, and regulatory navigation.',
-                bullets: ['Strategy consulting', 'Regulatory guidance', 'Market analysis'],
-                href: '/solutions/digital-assets-investment-advisory',
-              },
-            ].map((solution, idx) => (
+            {solutions.slice(0, 5).map((solution, idx) => (
               <motion.div
-                key={solution.title}
+                key={solution.slug}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
               >
                 <Link
-                  to={solution.href}
+                  to={`/solutions/${solution.slug}`}
                   className="block bg-white rounded-xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all group h-full"
                 >
                   <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
@@ -237,7 +237,7 @@ export function HomePage() {
                     </h3>
                     <p className="text-slate-600 mb-4 leading-relaxed">{solution.description}</p>
                     <ul className="space-y-2 mb-4">
-                      {solution.bullets.map((bullet) => (
+                      {solution.bullets && solution.bullets.map((bullet: string) => (
                         <li key={bullet} className="flex items-center gap-2 text-sm text-slate-600">
                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
                           {bullet}
@@ -367,62 +367,47 @@ export function HomePage() {
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-8 mb-12">
-            {[
-              {
-                industry: 'Supply Chain',
-                problem: 'Manual tracking and limited visibility across multi-tier supply chain',
-                implementation: 'Blockchain-based traceability with IoT sensor integration',
-                results: '87% reduction in verification time, full ESG compliance reporting',
-              },
-              {
-                industry: 'Financial Services',
-                problem: 'Complex KYC processes and siloed customer data across business units',
-                implementation: 'Decentralised identity platform with reusable credentials',
-                results: '65% faster onboarding, 40% cost reduction in compliance overhead',
-              },
-              {
-                industry: 'Healthcare',
-                problem: 'Fragmented patient records and credential verification delays',
-                implementation: 'Tokenised credential system with secure data sharing',
-                results: '92% improvement in credential verification time, enhanced data privacy',
-              },
-            ].map((study, idx) => (
-              <motion.div
-                key={study.industry}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all"
-              >
-                <div className="text-sm text-emerald-600 mb-3 font-semibold">{study.industry}</div>
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-bold">Problem</div>
-                    <p className="text-slate-700">{study.problem}</p>
+            <div className="grid lg:grid-cols-3 gap-8 mb-12">
+              {caseStudies.slice(0, 3).map((study, idx) => (
+                <motion.div
+                  key={study.industry}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all h-full"
+                >
+                  <div className="text-sm text-emerald-600 mb-3 font-semibold">{study.industry}</div>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-bold">Problem</div>
+                      <p className="text-slate-700">{study.challenge}</p>
+                    </div>
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-bold">Implementation</div>
+                      <p className="text-slate-700">{study.solution}</p>
+                    </div>
+                    <div>
+                      <div className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-bold">Results</div>
+                      <p className="text-slate-900 font-medium">
+                        {Array.isArray(study.results) ? study.results.join(', ') : study.results}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-bold">Implementation</div>
-                    <p className="text-slate-700">{study.implementation}</p>
-                  </div>
-                  <div>
-                    <div className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-bold">Results</div>
-                    <p className="text-slate-900 font-medium">{study.results}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
 
-          <div className="text-center">
-            <Link
-              to="/case-studies"
-              className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 transition-colors group font-medium"
-            >
-              Browse Case Studies
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="text-center">
+              <Link
+                to="/case-studies"
+                className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 transition-colors group font-medium"
+              >
+                Browse Case Studies
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -541,11 +526,7 @@ export function HomePage() {
             >
               <h3 className="text-xl text-slate-900 mb-6 font-semibold">Latest Insights</h3>
               <div className="space-y-4">
-                {[
-                  { title: 'Tokenisation frameworks for regulated assets', date: 'Jan 2026', category: 'Blockchain' },
-                  { title: 'AI automation in enterprise compliance workflows', date: 'Dec 2025', category: 'AI' },
-                  { title: 'Decentralised identity: enterprise adoption trends', date: 'Nov 2025', category: 'Identity' },
-                ].map((insight) => (
+                {insights.map((insight) => (
                   <motion.div
                     key={insight.title}
                     whileHover={{ x: 5, backgroundColor: 'rgba(255, 255, 255, 1)' }}
@@ -574,23 +555,20 @@ export function HomePage() {
             >
               <h3 className="text-xl text-slate-900 mb-6 font-semibold">In the Media</h3>
               <div className="space-y-4">
-                {[
-                  { title: 'Nija launches enterprise tokenisation platform', outlet: 'TechCrunch', date: 'Jan 2026' },
-                  { title: 'How blockchain is transforming supply chain operations', outlet: 'Forbes', date: 'Dec 2025' },
-                ].map((media) => (
+                {media.map((item) => (
                   <motion.div
-                    key={media.title}
+                    key={item.title}
                     whileHover={{ x: 5, backgroundColor: 'rgba(255, 255, 255, 1)' }}
                     className="bg-white rounded-lg p-5 border border-slate-200 hover:border-emerald-200 transition-all cursor-pointer shadow-sm hover:shadow-md"
                   >
                     <div className="flex items-start justify-between gap-4 mb-2">
-                      <h4 className="text-slate-900 font-medium">{media.title}</h4>
+                      <h4 className="text-slate-900 font-medium">{item.title}</h4>
                       <Globe className="w-5 h-5 text-slate-400 flex-shrink-0" />
                     </div>
                     <div className="flex items-center gap-3 text-sm text-slate-500">
-                      <span>{media.outlet}</span>
+                      <span>{item.outlet}</span>
                       <span>•</span>
-                      <span>{media.date}</span>
+                      <span>{item.date}</span>
                     </div>
                   </motion.div>
                 ))}

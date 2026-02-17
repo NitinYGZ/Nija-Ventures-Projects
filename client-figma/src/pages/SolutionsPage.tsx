@@ -2,64 +2,31 @@ import { Link } from 'react-router-dom';
 import { Coins, Package, UserCheck, Award, TrendingUp, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useState, useEffect } from 'react';
+import { fetchSolutions } from '../services/api';
+
+const iconMap: any = {
+  Coins,
+  Package,
+  UserCheck,
+  Award,
+  TrendingUp,
+};
+
 export function SolutionsPage() {
-  const solutions = [
-    {
-      slug: 'tokenisation',
-      title: 'Tokenisation',
-      icon: Coins,
-      description: 'Issue and manage compliant digital assets, credentials, and entitlements with full audit trails and regulatory compliance.',
-      benefits: [
-        'Compliant asset issuance',
-        'Automated lifecycle management',
-        'Real-time settlement',
-      ],
-    },
-    {
-      slug: 'supply-chain-solution',
-      title: 'Supply Chain Traceability',
-      icon: Package,
-      description: 'Track products and materials across complex supply chains with verifiable provenance and comprehensive ESG reporting.',
-      benefits: [
-        'End-to-end visibility',
-        'Provenance verification',
-        'ESG compliance',
-      ],
-    },
-    {
-      slug: 'identity-management',
-      title: 'Identity Management',
-      icon: UserCheck,
-      description: 'Decentralised identity and access management for secure, user-controlled credentials and privacy-preserving verification.',
-      benefits: [
-        'Self-sovereign identity',
-        'Privacy by design',
-        'Reusable credentials',
-      ],
-    },
-    {
-      slug: 'loyalty-solution',
-      title: 'Loyalty Solutions',
-      icon: Award,
-      description: 'Modern loyalty and rewards programs with flexible token economics, multi-partner integration, and enhanced customer engagement.',
-      benefits: [
-        'Multi-partner programs',
-        'Flexible rewards',
-        'Customer insights',
-      ],
-    },
-    {
-      slug: 'digital-assets-investment-advisory',
-      title: 'Digital Assets Advisory',
-      icon: TrendingUp,
-      description: 'Strategic guidance for digital asset strategy, tokenisation design, regulatory navigation, and market opportunity assessment.',
-      benefits: [
-        'Strategy consulting',
-        'Regulatory guidance',
-        'Market analysis',
-      ],
-    },
-  ];
+  const [solutions, setSolutions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchSolutions();
+        setSolutions(data);
+      } catch (error) {
+        console.error('Error fetching solutions:', error);
+      }
+    };
+    loadData();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -125,7 +92,10 @@ export function SolutionsPage() {
                   >
                     <div className="flex items-center gap-3 mb-6">
                       <div className="p-3 bg-emerald-100 rounded-lg">
-                        <solution.icon className="w-6 h-6 text-emerald-600" />
+                        {(() => {
+                          const Icon = iconMap[solution.icon] || Package;
+                          return <Icon className="w-6 h-6 text-emerald-600" />;
+                        })()}
                       </div>
                       <h3 className="text-xl text-slate-900 group-hover:text-emerald-600 transition-colors font-semibold">
                         {solution.title}
@@ -137,7 +107,7 @@ export function SolutionsPage() {
                     </p>
 
                     <div className="space-y-2 mb-6">
-                      {solution.benefits.map((benefit) => (
+                      {solution.benefits.map((benefit: string) => (
                         <div key={benefit} className="flex items-center gap-2 text-sm text-slate-700">
                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
                           {benefit}

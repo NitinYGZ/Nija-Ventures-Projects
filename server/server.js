@@ -20,6 +20,20 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/nijaworld
     .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Routes
+const caseStudiesRoutes = require('./routes/caseStudies');
+const solutionsRoutes = require('./routes/solutions');
+const technologiesRoutes = require('./routes/technologies');
+const insightsRoutes = require('./routes/insights');
+const mediaRoutes = require('./routes/media');
+const adminRoutes = require('./routes/admin');
+
+app.use('/api/case-studies', caseStudiesRoutes);
+app.use('/api/solutions', solutionsRoutes);
+app.use('/api/technologies', technologiesRoutes);
+app.use('/api/insights', insightsRoutes);
+app.use('/api/media', mediaRoutes);
+app.use('/api/admin', adminRoutes);
+
 app.get('/', (req, res) => {
     res.send('Nija World API is running');
 });

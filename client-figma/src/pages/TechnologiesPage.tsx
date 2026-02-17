@@ -2,64 +2,31 @@ import { Link } from 'react-router-dom';
 import { Network, Cpu, FileText, Cog, Shield, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useState, useEffect } from 'react';
+import { fetchTechnologies } from '../services/api';
+
+const iconMap: any = {
+  Network,
+  Cpu,
+  FileText,
+  Cog,
+  Shield,
+};
+
 export function TechnologiesPage() {
-  const technologies = [
-    {
-      slug: 'blockchain',
-      title: 'Blockchain',
-      icon: Network,
-      description: 'Distributed ledger infrastructure for secure, transparent, and tamper-proof record-keeping across organisational boundaries.',
-      capabilities: [
-        'Public and private blockchain deployment',
-        'Smart contract development and auditing',
-        'Tokenisation infrastructure',
-      ],
-    },
-    {
-      slug: 'ai-digitisation',
-      title: 'AI Digitisation',
-      icon: FileText,
-      description: 'Automated extraction and structuring of information from documents, forms, and unstructured data sources.',
-      capabilities: [
-        'Document processing and OCR',
-        'Data extraction and validation',
-        'Legacy system digitisation',
-      ],
-    },
-    {
-      slug: 'ai-automation',
-      title: 'AI Automation',
-      icon: Cog,
-      description: 'Intelligent process automation for repetitive workflows, decision support, and operational efficiency.',
-      capabilities: [
-        'Robotic process automation (RPA)',
-        'Workflow orchestration',
-        'Decision automation',
-      ],
-    },
-    {
-      slug: 'ai-infrastructure',
-      title: 'AI Infrastructure',
-      icon: Cpu,
-      description: 'Production-grade platforms for deploying, monitoring, and scaling machine learning models securely.',
-      capabilities: [
-        'Model deployment and serving',
-        'MLOps and monitoring',
-        'Scalable compute infrastructure',
-      ],
-    },
-    {
-      slug: 'ai-cybersecurity',
-      title: 'AI Cybersecurity',
-      icon: Shield,
-      description: 'Advanced threat detection, anomaly analysis, and security operations powered by machine learning.',
-      capabilities: [
-        'Threat detection and analysis',
-        'Behavioral anomaly detection',
-        'Security operations automation',
-      ],
-    },
-  ];
+  const [technologies, setTechnologies] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchTechnologies();
+        setTechnologies(data);
+      } catch (error) {
+        console.error('Error fetching technologies:', error);
+      }
+    };
+    loadData();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -125,7 +92,10 @@ export function TechnologiesPage() {
                   >
                     <div className="flex items-start gap-4 mb-6">
                       <div className="p-3 bg-emerald-100 rounded-lg flex-shrink-0">
-                        <tech.icon className="w-7 h-7 text-emerald-600" />
+                        {(() => {
+                          const Icon = iconMap[tech.icon] || Network;
+                          return <Icon className="w-7 h-7 text-emerald-600" />;
+                        })()}
                       </div>
                       <div>
                         <h3 className="text-2xl text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors font-semibold">
@@ -136,7 +106,7 @@ export function TechnologiesPage() {
                     </div>
 
                     <div className="space-y-3 mb-6">
-                      {tech.capabilities.map((capability) => (
+                      {tech.capabilities.map((capability: string) => (
                         <div key={capability} className="flex items-center gap-2 text-slate-700">
                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
                           {capability}

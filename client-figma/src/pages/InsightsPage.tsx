@@ -1,54 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Tag, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { fetchInsights } from '../services/api';
 
 export function InsightsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const insights = [
-    {
-      title: 'Tokenisation frameworks for regulated assets',
-      excerpt: 'An in-depth analysis of regulatory approaches to tokenisation across different jurisdictions and asset classes.',
-      date: 'January 15, 2026',
-      category: 'Blockchain',
-      readTime: '8 min read',
-    },
-    {
-      title: 'AI automation in enterprise compliance workflows',
-      excerpt: 'How organisations are deploying AI to reduce manual effort in compliance monitoring and reporting.',
-      date: 'December 28, 2025',
-      category: 'AI',
-      readTime: '6 min read',
-    },
-    {
-      title: 'Decentralised identity: enterprise adoption trends',
-      excerpt: 'Survey findings on enterprise adoption of self-sovereign identity and verifiable credentials.',
-      date: 'November 20, 2025',
-      category: 'Identity',
-      readTime: '7 min read',
-    },
-    {
-      title: 'Building secure supply chain traceability',
-      excerpt: 'Technical considerations for implementing blockchain-based supply chain solutions at scale.',
-      date: 'November 5, 2025',
-      category: 'Supply Chain',
-      readTime: '10 min read',
-    },
-    {
-      title: 'Smart contract security: enterprise best practices',
-      excerpt: 'A comprehensive guide to security auditing and risk management for enterprise smart contracts.',
-      date: 'October 18, 2025',
-      category: 'Security',
-      readTime: '12 min read',
-    },
-    {
-      title: 'Token economics design for loyalty programs',
-      excerpt: 'Frameworks for designing sustainable token economics in multi-partner loyalty ecosystems.',
-      date: 'October 2, 2025',
-      category: 'Blockchain',
-      readTime: '9 min read',
-    },
-  ];
+  const [insights, setInsights] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchInsights();
+        setInsights(data);
+      } catch (error) {
+        console.error('Error fetching insights:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
   const categories = ['All', 'Blockchain', 'AI', 'Identity', 'Supply Chain', 'Security'];
 
@@ -89,8 +62,8 @@ export function InsightsPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-4 py-2 rounded-lg transition-all font-medium ${selectedCategory === category
-                    ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 hover:border-emerald-200'
+                  ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20'
+                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 hover:border-emerald-200'
                   }`}
               >
                 {category}
@@ -103,52 +76,56 @@ export function InsightsPage() {
       {/* Insights Grid */}
       <section className="bg-slate-50 py-20 network-pattern min-h-[600px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            layout
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            <AnimatePresence mode='popLayout'>
-              {filteredInsights.map((insight) => (
-                <motion.article
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  key={insight.title}
-                  whileHover={{ y: -5 }}
-                  className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all cursor-pointer group h-full flex flex-col"
-                >
-                  <div className="p-6 flex flex-col h-full">
-                    <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        {insight.date}
+          {loading ? (
+            <div className="text-center py-20 text-slate-500">Loading insights...</div>
+          ) : (
+            <motion.div
+              layout
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              <AnimatePresence mode='popLayout'>
+                {filteredInsights.map((insight) => (
+                  <motion.article
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                    key={insight._id || insight.title}
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all cursor-pointer group h-full flex flex-col"
+                  >
+                    <div className="p-6 flex flex-col h-full">
+                      <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          {insight.date}
+                        </div>
+                        <span>•</span>
+                        <span>{insight.readTime}</span>
                       </div>
-                      <span>•</span>
-                      <span>{insight.readTime}</span>
-                    </div>
 
-                    <div className="inline-block px-3 py-1 bg-purple-50 text-purple-600 text-sm rounded-full mb-4 w-fit font-medium">
-                      {insight.category}
-                    </div>
+                      <div className="inline-block px-3 py-1 bg-purple-50 text-purple-600 text-sm rounded-full mb-4 w-fit font-medium">
+                        {insight.category}
+                      </div>
 
-                    <h3 className="text-xl text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors font-semibold">
-                      {insight.title}
-                    </h3>
-                    <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                      {insight.excerpt}
-                    </p>
+                      <h3 className="text-xl text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors font-semibold">
+                        {insight.title}
+                      </h3>
+                      <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
+                        {insight.excerpt}
+                      </p>
 
-                    <div className="flex items-center gap-2 text-emerald-600 group-hover:gap-3 transition-all font-medium mt-auto">
-                      Read more
-                      <ArrowRight className="w-4 h-4" />
+                      <div className="flex items-center gap-2 text-emerald-600 group-hover:gap-3 transition-all font-medium mt-auto">
+                        Read more
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
                     </div>
-                  </div>
-                </motion.article>
-              ))}
-            </AnimatePresence>
-          </motion.div>
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
 
           {filteredInsights.length === 0 && (
             <motion.div
